@@ -56,5 +56,22 @@ namespace Task1.Test
             Assert.AreEqual(3, matrix[0, 1]);
         }
 
+        [TestMethod]
+        public void Extension_Matrix_Test()
+        {
+            int[,] matr1 = { { 1, 2, 3 }, 
+                            { 1, 2, 3 }, 
+                            { 1, 2, 3 } };
+            SquareMatrix<int> matrix1 = new SquareMatrix<int>(matr1);
+
+            int[,] matr2 = { { 1, 0, 0 }, 
+                            { 0, 2, 0 }, 
+                            { 0, 0, 3 } };
+            DiagonalMatrix<int> matrix2 = new DiagonalMatrix<int>(matr2);
+
+            SquareMatrix<int> output = matrix1.Sum(matrix2);
+
+            Assert.AreEqual(4, output[1, 1]);
+        }
     }
 }

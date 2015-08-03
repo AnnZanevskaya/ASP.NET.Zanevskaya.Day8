@@ -8,23 +8,36 @@ namespace Task1.Library
 {
     public static class MatrixExtension
     {
-        public static SquareMatrix<T> Sum<T>(this SquareMatrix<T> lhs, SquareMatrix<T> rhs, Func<T, T, T> func)
+        public static SquareMatrix<T> Sum<T>(this SquareMatrix<T> lhs, SquareMatrix<T> rhs, Func<dynamic, dynamic, dynamic> func)
         {
-            if (rhs == null)
-                throw new ArgumentNullException();
+            if (ReferenceEquals(rhs, null))
+                throw new ArgumentNullException("rhs");
             if (lhs.Size != rhs.Size)
                 throw new ArgumentException("Different size");
-
             SquareMatrix<T> squareMatrix = new SquareMatrix<T>(lhs.Size);
-            for (int i = 0; i < lhs.Size; i++)
+            try
             {
-                for (int j = 0; j < lhs.Size; j++)
+                for (int i = 0; i < lhs.Size; i++)
                 {
-                    squareMatrix[i, j] = func(lhs[i, j], rhs[i, j]);
+                    for (int j = 0; j < lhs.Size; j++)
+                    {
+                        squareMatrix[i, j] = func(lhs[i, j], rhs[i, j]);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("can't Sum {0}", ex);
             }
             return squareMatrix;
         }
-       
+        public static SquareMatrix<T> Sum<T>(this SquareMatrix<T> lhs, SquareMatrix<T> rhs)
+        {
+            return Sum<T>(lhs, rhs, Add<T>);
+        }
+        private static dynamic Add<T>(dynamic x, dynamic y)
+        {
+            return (T)(x + y);
+        }
     }
 }
